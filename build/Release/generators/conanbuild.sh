@@ -1,0 +1,1 @@
+. "/home/rgu/Downloads/labiryntGeneratingProcject/LabiryntGenerator/build/Release/generators/conanbuildenv-release-x86_64.sh"
