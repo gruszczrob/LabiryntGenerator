@@ -7,9 +7,11 @@ project(LabiryntGenerator VERSION 1.0)
 # Specify the C++ standard
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(SOURCES ./Logs/Logs.cpp ./Logs/Logs.h ./ClassFactory/ClassFactory.cpp ./ClassFactory/ClassFactory.h ./Cli/Cli.cpp ./Cli/Cli.h ./DrawingEngine/DrawingEngine.cpp ./DrawingEngine/DrawingEngine.h ./DrawingEngineFactory/DrawingEngineFactory.cpp ./DrawingEngineFactory/DrawingEngineFactory.h main.cpp)
+
 
 # Add the executable
-add_executable(LabiryntGenerator main.cpp)
+add_executable(LabiryntGenerator ${SOURCES})
 
 find_package(ftxui REQUIRED)
 
