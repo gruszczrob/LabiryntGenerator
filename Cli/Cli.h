@@ -12,13 +12,13 @@ using namespace std;
 
 class Cli : public DrawingEngine {
 private:
-    shared_ptr<char> wall = make_shared<char>();
-    shared_ptr<char> route = make_shared<char>();
+	 shared_ptr<char> wall = make_shared<char>();
+	 shared_ptr<char> route = make_shared<char>();
 
 public:
-    Cli(any widthI, any heightI, any wallI, any routeI);
+	 Cli(any widthI, any heightI, any wallI, any routeI);
 
-    void print(vector<vector<int>> grid);
+	 void print(vector<vector<int>> grid);
 };
 
 #endif /* CLI_H */
