@@ -1,18 +1,17 @@
 #include "ClassFactory.h"
 
+using namespace std;
+
 bool UnorderPointersMap::isExisting(const string& key) const {
 	 return myList.find(key) != myList.end();
 }
 
-ClassFactory::ClassFactory() {
-	 writeToLogs("Drawable Engine Factory created");
-}
 
 void ClassFactory::setNotCorrected() {
 	 setVar<bool>(isCorrect, false);
 }
 
 bool ClassFactory::checkIfCorrect() {
-	 return *(isCorrect.get());
+	 return isCorrect;
 }
 

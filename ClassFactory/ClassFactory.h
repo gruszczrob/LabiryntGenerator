@@ -1,5 +1,5 @@
-#ifndef CLASSFACTORY_H
-#define CLASSFACTORY_H
+#ifndef CLASS_FACTORY_H_
+#define CLASS_FACTORY_H_
 
 #include <iostream>
 #include <memory>
@@ -7,49 +7,45 @@
 #include <unordered_map>
 #include <vector>
 #include <variant>
-#include "../Logs/Logs.h"
-
-using namespace std;
+#include "Logs.h"
 
 class UnorderPointersMap {
-private:
-	 using VarType = variant<shared_ptr<int>, shared_ptr<float>, shared_ptr<string>, shared_ptr<char>, shared_ptr<bool>>;
-	 unordered_map<string, VarType> myList;
+	private:
+		using VarType = std::variant<std::shared_ptr<int>, std::shared_ptr<float>, std::shared_ptr<std::string>, std::shared_ptr<char>, std::shared_ptr<bool>>;
+		std::unordered_map<std::string, VarType> myList;
 
-public:
-	 template <typename T>
-	 void addItem(const string& key, shared_ptr<T> item);
+	public:
+		template <typename T>
+		void addItem(const std::string& key, T& item);
 
-	 template <typename T>
-	 T& getItem(const string& key) const;
+		template <typename T>
+		T& getItem(const std::string& key) const;
 
-	 bool isExisting(const string& key) const;
+		bool isExisting(const std::string& key) const;
 };
 
 class ClassFactory {
-private:
-	 shared_ptr<bool> isCorrect = make_shared<bool>(true);
-	 UnorderPointersMap unorderedPointersMap;
+	private:
+		bool isCorrect = true;
+		UnorderPointersMap unorderedPointersMap;
 
-protected:
-	 void setNotCorrected();
+	protected:
+		void setNotCorrected();
 
-	 template <typename T>
-	 bool setVar(shared_ptr<T>& VarPtr, any input, const string name = "");
+		template <typename T>
+		bool setVar(T& VarPtr, std::any input, const std::string& name = "");
 
-public:
-	 ClassFactory();
+	public:
+		template <typename T>
+		bool setVar(const std::string& varName, T input);
 
-	 template <typename T>
-	 bool setVar(const string& varName, T input);
+		template <typename T>
+		T getVar(const std::string& varName);
 
-	 template <typename T>
-	 T getVar(const string& varName);
-
-	 bool checkIfCorrect();
+		bool checkIfCorrect();
 };
 
 // Template function implementations
 #include "ClassFactory.tpp"
 
-#endif /* CLASSFACTORY_H */
+#endif /* CLASS_FACTORY_H_ */

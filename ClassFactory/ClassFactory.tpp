@@ -1,67 +1,67 @@
 // Template function implementations for UnorderPointersMap
 
 template <typename T>
-void UnorderPointersMap::addItem(const string& key, shared_ptr<T> item) {
-	myList[key] = item;
+void UnorderPointersMap::addItem(const std::string& key, T& item) {
+	std::shared_ptr<T> ptr = std::make_shared<T>(item);
+	myList[key] = ptr;
 }
 
 template <typename T>
-T& UnorderPointersMap::getItem(const string& key) const {
+T& UnorderPointersMap::getItem(const std::string& key) const {
 	auto it = myList.find(key);
 	if (it != myList.end()) {
-		if (auto ptr = get_if<shared_ptr<T>>(&(it->second))) {
+		if (auto ptr = std::get_if<std::shared_ptr<T>>(&(it->second))) {
 			return **ptr;
 		}
 	}
-	throw invalid_argument("Key not found or type mismatch");
+	throw std::invalid_argument("Key not found or type mismatch");
 }
 
 // Template function implementations for ClassFactory
 
 template <typename T>
-bool ClassFactory::setVar(shared_ptr<T>& VarPtr, any input, const string name) {
+bool ClassFactory::setVar(T& Var, std::any input, const std::string& name) {
 	try {
-		*VarPtr = any_cast<T>(input);
-		if (name != "") {
-			unorderedPointersMap.addItem<T>(name, VarPtr);
+		Var = std::any_cast<T>(input);
+		if (!name.empty()) {
+			unorderedPointersMap.addItem<T>(name, Var);
 		}
 		return true;
-	} catch (const exception& e) {
-		cout << "Invalid input" << endl;
+	} catch (const std::exception& e) {
+		std::cout << "Invalid input" << std::endl;
 		writeToLogs(string("Error in private setVar: ") + string(e.what()));
 		return false;
 	}
 }
 
 template <typename T>
-bool ClassFactory::setVar(const string& varName, T input) {
+bool ClassFactory::setVar(const std::string& varName, T input) {
 	try {
 		if (unorderedPointersMap.isExisting(varName)) {
 			unorderedPointersMap.getItem<T>(varName) = input;
 		} else {
-			cout << "Variable not found" << endl;
+			std::cout << "Variable not found" << std::endl;
 			writeToLogs("Error in public setVar: variable not found");
 			return false;
 		}
 		return true;
-	} catch (const exception& e) {
+	} catch (const std::exception& e) {
 	  	writeToLogs(string("Error in public setVar: ") + string(e.what()));
 	  	return false;
 	}
 }
 
 template <typename T>
-T ClassFactory::getVar(const string& varName) {
+T ClassFactory::getVar(const std::string& varName) {
 	if (!checkIfCorrect()) {
-	  	cout << "This class contains error, one of arguments in constructor was in incorrect type" << endl;
-	  	return T();
+	  	std::cout << "This class contains errors; one of the arguments in the constructor was of an incorrect type" << std::endl;
+		throw std::runtime_error("ClassFactory contains errors");
  	} else {
 	  	if (unorderedPointersMap.isExisting(varName)) {
 			return unorderedPointersMap.getItem<T>(varName);
 	  	} else {
 			writeToLogs("Error in public getVar: variable not found");
-			cout << "Variable not found" << endl;
-			return T();
+			throw std::runtime_error("Variable not found: " + varName);
 	  	}
  	}
 }
