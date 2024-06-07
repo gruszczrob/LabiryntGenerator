@@ -1,1 +1,1 @@
-# LabiryntGenerator
+#LabiryntGenerator
